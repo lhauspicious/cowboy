@@ -56,7 +56,8 @@ connect(Host, Port, Opts) when is_list(Host), is_integer(Port) ->
 listen(Opts) ->
 	{port, Port} = lists:keyfind(port, 1, Opts),
 	Backlog = proplists:get_value(backlog, Opts, 1024),
-	ListenOpts0 = [binary, {active, false},
+	KeepAlive = proplists:get_value(keepalive, Opts, false),
+	ListenOpts0 = [binary, {active, false}, {keepalive, KeepAlive},
 		{backlog, Backlog}, {packet, raw}, {reuseaddr, true}],
 	ListenOpts =
 		case lists:keyfind(ip, 1, Opts) of
