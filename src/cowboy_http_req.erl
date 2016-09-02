@@ -22,7 +22,7 @@
 -module(cowboy_http_req).
 
 -export([
-	method/1, version/1, peer/1, peer_addr/1,
+	method/1, version/1, peer/1, get_pid/1, peer_addr/1,
 	host/1, host_info/1, raw_host/1, port/1,
 	path/1, path_info/1, raw_path/1,
 	qs_val/2, qs_val/3, qs_vals/1, raw_qs/1,
@@ -73,6 +73,10 @@ peer(Req=#http_req{socket=Socket, transport=Transport, peer=undefined}) ->
 	{Peer, Req#http_req{peer=Peer}};
 peer(Req) ->
 	{Req#http_req.peer, Req}.
+
+-spec get_pid(#http_req{}) -> {pid(), #http_req{}}.
+get_pid(Req) ->
+	{Req#http_req.pid, Req}.
 
 %% @doc Returns the peer address calculated from headers.
 -spec peer_addr(#http_req{}) -> {inet:ip_address(), #http_req{}}.
